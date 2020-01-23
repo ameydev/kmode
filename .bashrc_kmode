@@ -1,0 +1,48 @@
+# Step 1
+# Edit the PS1:
+# Before adding the below SP1 append snippet, remove the "\$" from your existing PS1 at the end.
+
+
+# Step 2
+# Append the kube_promt to PS1. Add the below snippet after existing PS1.
+if [ "$KMODE" = on ]; then
+        PS1+='[\033[00m\]\[\033[01;31m\]$(Kmode_promt)\[\033[00m\]\$ '
+
+else
+        PS1+='\$ '
+fi
+
+
+# Step 3
+# Add the below functions.
+
+# Returns the kubectl current context and namespace
+function Kmode_promt {
+        if [[ "$KUBEMODE" = on ]]; then
+                echo '('$(getKContext)'/'$(getKNamespace)')'
+        fi
+}
+
+#Get the current kubectl context
+function getKContext {
+
+        echo `kubectl config current-context`
+}
+#Get the current kubectl namespace
+function getKNamespace {
+
+        NAMESPACE=`kubectl config view --minify --output 'jsonpath={..namespace}'`
+        if [ "$NAMESPACE" = "" ]; then
+                NAMESPACE="default"
+        fi
+        echo $NAMESPACE
+
+}
+
+
+# Step 4
+#Add these Aliases to change the kmode status!!!
+alias kmode='export KMODE=on; echo "kmode turned on!"'
+alias kmode-off='export KMODE=off; echo "kmode turned off!"'
+
+
