@@ -18,7 +18,7 @@ fi
 
 # Returns the kubectl current context and namespace
 function Kmode_promt {
-        if [[ "$KUBEMODE" = on ]]; then
+        if [[ "$KMODE" = on ]]; then
                 echo '('$(getKContext)'/'$(getKNamespace)')'
         fi
 }
